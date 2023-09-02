@@ -10,7 +10,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.from(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromRGBO(53, 53, 208, 1.0),
+          seedColor: const Color.fromRGBO(30, 40, 171, 1.0),
         ),
       ),
       home: const Login(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
+import 'signup.dart';
 
 class Login extends StatefulWidget {
   const Login({
@@ -21,7 +22,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: Form(
@@ -39,7 +39,12 @@ class _LoginState extends State<Login> {
               TextFormField(
                 controller: _controllerUsername,
                 keyboardType: TextInputType.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
                 decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   labelText: "Usuario",
                   suffixIcon: const Icon(Icons.person_outline),
                   border: OutlineInputBorder(
@@ -52,19 +57,21 @@ class _LoginState extends State<Login> {
                 onEditingComplete: () => _focusNodePassword.requestFocus(),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Por favor ingresa tu usuario.";
+                    return "Ingresa tu usuario.";
                   }
-
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _controllerPassword,
                 focusNode: _focusNodePassword,
                 obscureText: _obscurePassword,
                 keyboardType: TextInputType.visiblePassword,
+                style: const TextStyle(fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   labelText: "Contraseña",
                   suffixIcon: IconButton(
                       onPressed: () {
@@ -84,9 +91,8 @@ class _LoginState extends State<Login> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Por favor ingresa tu contraseña.";
+                    return "Ingresa tu contraseña.";
                   }
-
                   return null;
                 },
               ),
@@ -114,7 +120,14 @@ class _LoginState extends State<Login> {
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.reset();
-                          print("Validación");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const Signup();
+                              },
+                            ),
+                          );
                         },
                         child: const Text("Regístrate"),
                       ),
