@@ -31,13 +31,6 @@ class NavDrawer extends StatelessWidget {
                   Navigator.of(context).pop(),
                 },
               ),
-              ListTile(
-                title: const Text('Solicitudes'),
-                leading: const Icon(Icons.list),
-                onTap: () => {
-                  Navigator.of(context).pop(),
-                },
-              ),
             ],
           ),
         ),
