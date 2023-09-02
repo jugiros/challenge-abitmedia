@@ -216,9 +216,7 @@ class _SignupState extends State<Signup> {
                                 const Text("Registro realizado correctamente"),
                           ),
                         );
-
                         _formKey.currentState?.reset();
-
                         Navigator.pop(context);
                       }
                     },

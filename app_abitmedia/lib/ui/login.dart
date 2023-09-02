@@ -1,3 +1,4 @@
+import 'package:app_abitmedia/ui/home.dart';
 import 'package:flutter/material.dart';
 
 import 'signup.dart';
@@ -108,7 +109,14 @@ class _LoginState extends State<Login> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        print("Validación");
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const MyHomePage();
+                            },
+                          ),
+                        );
                       }
                     },
                     child: const Text("Iniciar Sesión"),
