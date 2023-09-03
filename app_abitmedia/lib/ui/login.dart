@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:app_abitmedia/models/LoginData.dart';
-import 'package:app_abitmedia/ui/home.dart';
+import 'package:app_abitmedia/utils/ApiServices.dart';
+import 'package:loading_btn/loading_btn.dart';
 import 'package:flutter/material.dart';
 
 import 'signup.dart';
@@ -101,26 +100,29 @@ class _LoginState extends State<Login> {
               const SizedBox(height: 60),
               Column(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  LoadingBtn(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    borderRadius: 10,
+                    loader: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      width: 40,
+                      height: 40,
+                      child: const CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const MyHomePage();
-                            },
-                          ),
-                        );
+                    onTap: ((startLoading, stopLoading, btnState) async {
+                      if (btnState == ButtonState.idle) {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          startLoading();
+                          await ApiService.login(loginData, context);
+                          stopLoading();
+                        }
                       }
-                    },
-                    child: const Text("Iniciar Sesión"),
+                    }),
+                    child: const Text("Iniciar sesión"),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
