@@ -1,5 +1,7 @@
 import 'package:app_abitmedia/models/LoginData.dart';
+import 'package:app_abitmedia/ui/home.dart';
 import 'package:app_abitmedia/utils/ApiServices.dart';
+import 'package:hive/hive.dart';
 import 'package:loading_btn/loading_btn.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +20,15 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   LoginData loginData = LoginData();
-
   bool _obscurePassword = true;
+  final Box _boxLogin = Hive.box("login");
 
   @override
   Widget build(BuildContext context) {
+    if (_boxLogin.get("status") ?? false) {
+      return const MyHomePage();
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: Form(
