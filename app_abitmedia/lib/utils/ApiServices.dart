@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
 
-  final Box _boxLogin = Hive.box("login");
+  static final Box _boxLogin = Hive.box("login");
 
   static const snackBar = SnackBar(
     content: Text('Error en la conexión.'),
@@ -26,7 +26,7 @@ class ApiService {
 
   // Método login para obtener el token de autenticación para consumo de servicios
   static Future<dynamic> login(LoginData loginData, context) async {
-    var data = {
+    final data = {
       'grant_type': 'password',
       'username': loginData.emailController.text,
       'password': loginData.passwordController.text
@@ -34,15 +34,17 @@ class ApiService {
     String basicAut = base64.encode(utf8.encode('${JwtCredentials.clientId}:${JwtCredentials.secretKey}'));
     final response = await http.post(
       Uri.parse('${UrlApi.API}/${Endpoints.login}'),
-      headers: <String, String>{
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic $basicAut'
       },
-      body: jsonEncode(data),
+      body: data,
     );
 
     if (response.statusCode == 200) {
-      // _boxLogin.put("token", response.body["access_token"]);
+      String bodyResponse = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(bodyResponse);
+      _boxLogin.put("token", jsonData["access_token"]);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -52,7 +54,7 @@ class ApiService {
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBarSucces);
-      return json.decode(response.body);
+      return json.decode(bodyResponse);
     } else {
       const snackBarLogin = SnackBar(
         content: Text('Credenciales incorrectas.'),
