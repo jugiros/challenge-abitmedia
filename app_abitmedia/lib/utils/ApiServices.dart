@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:app_abitmedia/entities/User.dart';
 import 'package:app_abitmedia/models/LoginData.dart';
 import 'package:app_abitmedia/ui/home.dart';
+import 'package:app_abitmedia/ui/login.dart';
 import 'package:app_abitmedia/utils/Endpoints.dart';
 import 'package:app_abitmedia/utils/jwtCredentials.dart';
 import 'package:app_abitmedia/utils/urlApi.dart';
@@ -9,11 +11,10 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-
   static final Box _boxLogin = Hive.box("login");
 
-  static const snackBar = SnackBar(
-    content: Text('Error en la conexión.'),
+  static const snackBarError = SnackBar(
+    content: Text('Error edentro del proceso.'),
     backgroundColor: Colors.red,
     duration: Duration(seconds: 5),
   );
@@ -31,7 +32,8 @@ class ApiService {
       'username': loginData.emailController.text,
       'password': loginData.passwordController.text
     };
-    String basicAut = base64.encode(utf8.encode('${JwtCredentials.clientId}:${JwtCredentials.secretKey}'));
+    String basicAut = base64.encode(
+        utf8.encode('${JwtCredentials.clientId}:${JwtCredentials.secretKey}'));
     final response = await http.post(
       Uri.parse('${UrlApi.API}/${Endpoints.login}'),
       headers: {
@@ -55,7 +57,7 @@ class ApiService {
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBarSucces);
-      return json.decode(bodyResponse);
+      return jsonData;
     } else {
       const snackBarLogin = SnackBar(
         content: Text('Credenciales incorrectas.'),
@@ -67,10 +69,24 @@ class ApiService {
     }
   }
 
+  //Método para registrar un nuevo usuario
+  static Future<dynamic> register(User user, context) async {
+    Map<String, dynamic> userMap = user.toJson();
+    final response = await post(Endpoints.register, userMap, context);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const Login();
+        },
+      ),
+    );
+    return response;
+  }
+
   // Método para realizar una solicitud HTTP GET
   Future<dynamic> get(String endpoint) async {
     final response = await http.get(Uri.parse('${UrlApi.API}/$endpoint'));
-
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
@@ -79,19 +95,26 @@ class ApiService {
   }
 
   // Método para realizar una solicitud HTTP POST
-  Future<dynamic> post(String endpoint, Map<String, dynamic> data) async {
+  static Future<dynamic> post(
+      String endpoint, Map<String, dynamic> data, context) async {
+    String token = _boxLogin.get("status") != null ? _boxLogin.get("status") ? _boxLogin.get('Token') : '' : '';
     final response = await http.post(
       Uri.parse('${UrlApi.API}/$endpoint'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': token != '' ? 'Bearer $token' : ''
       },
       body: jsonEncode(data),
     );
 
-    if (response.statusCode == 201) {
-      return json.decode(response.body);
+    if (response.statusCode == 200) {
+      String bodyResponse = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(bodyResponse);
+      ScaffoldMessenger.of(context).showSnackBar(snackBarSucces);
+      return jsonData;
     } else {
-      throw Exception('Error en la solicitud POST: ${response.reasonPhrase}');
+      ScaffoldMessenger.of(context).showSnackBar(snackBarError);
+      return json.decode(response.body);
     }
   }
 

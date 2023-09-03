@@ -1,5 +1,8 @@
+import 'package:app_abitmedia/entities/User.dart';
 import 'package:app_abitmedia/models/RegisterData.dart';
+import 'package:app_abitmedia/utils/ApiServices.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_btn/loading_btn.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -54,7 +57,8 @@ class _SignupState extends State<Signup> {
 
                   return null;
                 },
-                onEditingComplete: () => registerData.focusNodeEmail.requestFocus(),
+                onEditingComplete: () =>
+                    registerData.focusNodeEmail.requestFocus(),
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -80,7 +84,8 @@ class _SignupState extends State<Signup> {
 
                   return null;
                 },
-                onEditingComplete: () => registerData.focusNodeEmail.requestFocus(),
+                onEditingComplete: () =>
+                    registerData.focusNodeEmail.requestFocus(),
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -108,7 +113,8 @@ class _SignupState extends State<Signup> {
                   }
                   return null;
                 },
-                onEditingComplete: () => registerData.focusNodePassword.requestFocus(),
+                onEditingComplete: () =>
+                    registerData.focusNodePassword.requestFocus(),
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -187,33 +193,35 @@ class _SignupState extends State<Signup> {
               const SizedBox(height: 50),
               Column(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  LoadingBtn(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    borderRadius: 10,
+                    loader: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      width: 40,
+                      height: 40,
+                      child: const CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            width: 300,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            content:
-                                const Text("Registro realizado correctamente"),
-                          ),
-                        );
-                        _formKey.currentState?.reset();
-                        Navigator.pop(context);
+                    onTap: ((startLoading, stopLoading, btnState) async {
+                      if (btnState == ButtonState.idle) {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          startLoading();
+                          User user = User(
+                              registerData.controllerName.text,
+                              registerData.controllerSurename.text,
+                              registerData.controllerEmail.text,
+                              registerData.controllerPassword.text);
+                          await ApiService.register(user, context);
+                          _formKey.currentState?.reset();
+                          stopLoading();
+                        }
                       }
-                    },
-                    child: const Text("Registrar"),
+                    }),
+                    child: const Text("Regístrate"),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
