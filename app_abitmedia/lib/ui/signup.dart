@@ -1,3 +1,4 @@
+import 'package:app_abitmedia/models/RegisterData.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -10,15 +11,7 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  final FocusNode _focusNodeEmail = FocusNode();
-  final FocusNode _focusNodePassword = FocusNode();
-  final FocusNode _focusNodeConfirmPassword = FocusNode();
-  final TextEditingController _controllerName = TextEditingController();
-  final TextEditingController _controllerSurename = TextEditingController();
-  final TextEditingController _controllerEmail = TextEditingController();
-  final TextEditingController _controllerPassword = TextEditingController();
-  final TextEditingController _controllerConFirmPassword =
-      TextEditingController();
+  RegisterData registerData = RegisterData();
 
   bool _obscurePassword = true;
 
@@ -39,7 +32,7 @@ class _SignupState extends State<Signup> {
               ),
               const SizedBox(height: 35),
               TextFormField(
-                controller: _controllerName,
+                controller: registerData.controllerName,
                 keyboardType: TextInputType.name,
                 style: const TextStyle(fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
@@ -61,11 +54,11 @@ class _SignupState extends State<Signup> {
 
                   return null;
                 },
-                onEditingComplete: () => _focusNodeEmail.requestFocus(),
+                onEditingComplete: () => registerData.focusNodeEmail.requestFocus(),
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _controllerSurename,
+                controller: registerData.controllerSurename,
                 keyboardType: TextInputType.name,
                 style: const TextStyle(fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
@@ -87,12 +80,12 @@ class _SignupState extends State<Signup> {
 
                   return null;
                 },
-                onEditingComplete: () => _focusNodeEmail.requestFocus(),
+                onEditingComplete: () => registerData.focusNodeEmail.requestFocus(),
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _controllerEmail,
-                focusNode: _focusNodeEmail,
+                controller: registerData.controllerEmail,
+                focusNode: registerData.focusNodeEmail,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
@@ -115,13 +108,13 @@ class _SignupState extends State<Signup> {
                   }
                   return null;
                 },
-                onEditingComplete: () => _focusNodePassword.requestFocus(),
+                onEditingComplete: () => registerData.focusNodePassword.requestFocus(),
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _controllerPassword,
+                controller: registerData.controllerPassword,
                 obscureText: _obscurePassword,
-                focusNode: _focusNodePassword,
+                focusNode: registerData.focusNodePassword,
                 keyboardType: TextInputType.visiblePassword,
                 style: const TextStyle(fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
@@ -153,13 +146,13 @@ class _SignupState extends State<Signup> {
                   return null;
                 },
                 onEditingComplete: () =>
-                    _focusNodeConfirmPassword.requestFocus(),
+                    registerData.focusNodeConfirmPassword.requestFocus(),
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _controllerConFirmPassword,
+                controller: registerData.controllerConFirmPassword,
                 obscureText: _obscurePassword,
-                focusNode: _focusNodeConfirmPassword,
+                focusNode: registerData.focusNodeConfirmPassword,
                 keyboardType: TextInputType.visiblePassword,
                 style: const TextStyle(fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
@@ -185,7 +178,7 @@ class _SignupState extends State<Signup> {
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa la cofirmación de tu contraseña.";
-                  } else if (value != _controllerPassword.text) {
+                  } else if (value != registerData.controllerPassword.text) {
                     return "Las contraseñas no coinciden.";
                   }
                   return null;
@@ -243,14 +236,7 @@ class _SignupState extends State<Signup> {
 
   @override
   void dispose() {
-    _focusNodeEmail.dispose();
-    _focusNodePassword.dispose();
-    _focusNodeConfirmPassword.dispose();
-    _controllerName.dispose();
-    _controllerSurename.dispose();
-    _controllerEmail.dispose();
-    _controllerPassword.dispose();
-    _controllerConFirmPassword.dispose();
+    registerData.dispose();
     super.dispose();
   }
 }

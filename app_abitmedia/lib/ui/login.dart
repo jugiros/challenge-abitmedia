@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:app_abitmedia/models/LoginData.dart';
 import 'package:app_abitmedia/ui/home.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +18,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  final FocusNode _focusNodePassword = FocusNode();
-  final TextEditingController _controllerUsername = TextEditingController();
-  final TextEditingController _controllerPassword = TextEditingController();
+  LoginData loginData = LoginData();
 
   bool _obscurePassword = true;
 
@@ -38,7 +39,7 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 50),
               TextFormField(
-                controller: _controllerUsername,
+                controller: loginData.emailController,
                 keyboardType: TextInputType.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -55,7 +56,7 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onEditingComplete: () => _focusNodePassword.requestFocus(),
+                onEditingComplete: () => loginData.passwordFocusNode,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa tu usuario.";
@@ -65,8 +66,8 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _controllerPassword,
-                focusNode: _focusNodePassword,
+                controller: loginData.passwordController,
+                focusNode: loginData.passwordFocusNode,
                 obscureText: _obscurePassword,
                 keyboardType: TextInputType.visiblePassword,
                 style: const TextStyle(fontWeight: FontWeight.bold),
@@ -152,9 +153,7 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    _focusNodePassword.dispose();
-    _controllerUsername.dispose();
-    _controllerPassword.dispose();
+    loginData.dispose();
     super.dispose();
   }
 }
