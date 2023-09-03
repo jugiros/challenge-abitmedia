@@ -45,6 +45,7 @@ class ApiService {
       String bodyResponse = utf8.decode(response.bodyBytes);
       final jsonData = jsonDecode(bodyResponse);
       _boxLogin.put("token", jsonData["access_token"]);
+      _boxLogin.put("status", true);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
