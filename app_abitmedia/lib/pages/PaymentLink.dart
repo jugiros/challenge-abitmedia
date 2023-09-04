@@ -94,6 +94,7 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
                         if (_formKey.currentState?.validate() ?? false) {
                           startLoading();
                           // await ApiService.login(loginData, context);
+                          _formKey.currentState?.reset();
                           stopLoading();
                         }
                       }

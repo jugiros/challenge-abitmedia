@@ -1,4 +1,6 @@
+import 'package:app_abitmedia/entities/PaymentRequestEntity.dart';
 import 'package:app_abitmedia/models/PaymentRequestData.dart';
+import 'package:app_abitmedia/utils/ApiServices.dart';
 import 'package:app_abitmedia/utils/InputDecorationUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,10 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
     // Aquí puedes construir tu interfaz de usuario utilizando los controladores de texto
     // Ejemplo:
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .primaryContainer,
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -39,7 +44,10 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
             children: [
               Text(
                 "Genera una solicitud de pago",
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleLarge,
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -48,7 +56,8 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Nombre del beneficiario', Icons.person),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Nombre del beneficiario', Icons.person),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa el nombre.";
@@ -63,7 +72,8 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Correo electrónico', Icons.email),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Correo electrónico', Icons.email),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa el correo electrónico.";
@@ -80,7 +90,8 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Celular', Icons.phone),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Celular', Icons.phone),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa el teléfono celular.";
@@ -95,7 +106,8 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Dirección', Icons.directions),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Dirección', Icons.directions),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa la dirección.";
@@ -106,15 +118,17 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87
                 ),
                 decoration: const InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 10.0, 20.0, 10.0),
                   labelText: 'Tipo de usuario',
                   border: OutlineInputBorder(
                     borderSide: BorderSide( // Configura el borde inferior
-                      color: Colors.transparent, // Color transparente para eliminar el borde inferior
+                      color: Colors
+                          .transparent, // Color transparente para eliminar el borde inferior
                     ),
                   ),
                 ),
@@ -141,11 +155,13 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                     color: Colors.black87
                 ),
                 decoration: const InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 10.0, 20.0, 10.0),
                   labelText: 'Tipo de documento',
                   border: OutlineInputBorder(
                     borderSide: BorderSide( // Configura el borde inferior
-                      color: Colors.transparent, // Color transparente para eliminar el borde inferior
+                      color: Colors
+                          .transparent, // Color transparente para eliminar el borde inferior
                     ),
                   ),
                 ),
@@ -174,7 +190,8 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Documento de identidad', Icons.numbers),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Documento de identidad', Icons.numbers),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa el teléfono celular.";
@@ -189,7 +206,8 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Cantidad', Icons.money),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Cantidad', Icons.money),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa el teléfono celular.";
@@ -209,7 +227,8 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Descripción', Icons.text_fields),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Descripción', Icons.text_fields),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa la descripción.";
@@ -222,7 +241,10 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                 children: [
                   LoadingBtn(
                     height: 50,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     borderRadius: 10,
                     loader: Container(
                       padding: const EdgeInsets.all(10.0),
@@ -237,7 +259,34 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                       if (btnState == ButtonState.idle) {
                         if (_formKey.currentState?.validate() ?? false) {
                           startLoading();
-                          // await ApiService.login(loginData, context);
+                          Third third = Third(
+                              paymentData.documentController.text,
+                              _selectedDocumentTypeOption,
+                              paymentData.nameController.text,
+                              paymentData.emailController.text,
+                              paymentData.phonesController.text,
+                              paymentData.addressController.text,
+                              _selectedUserTypeOption);
+                          double amountWithTax = double.parse(
+                              paymentData.amountController.text) / 2;
+                          double taxValue = (double.parse(
+                              paymentData.amountController.text) / 2) * 0.12;
+                          PaymentRequestEntity paymentReques = PaymentRequestEntity(
+                              false,
+                              third,
+                              0,
+                              paymentData.descriptionController.text,
+                              (amountWithTax * 2) + taxValue,
+                              amountWithTax,
+                              amountWithTax,
+                              taxValue,
+                              null,
+                              null,
+                              0,
+                              1);
+                          await ApiService.paymentRequest(paymentReques,
+                              context);
+                          _formKey.currentState?.reset();
                           stopLoading();
                         }
                       }
