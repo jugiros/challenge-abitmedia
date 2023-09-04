@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app_abitmedia/entities/PaymentRequestEntity.dart';
 import 'package:app_abitmedia/entities/User.dart';
 import 'package:app_abitmedia/models/LoginData.dart';
 import 'package:app_abitmedia/ui/home.dart';
@@ -85,6 +86,15 @@ class ApiService {
     return response;
   }
 
+  //Método para generar una solicitud de pago
+  static Future<dynamic> paymentRequest(
+      PaymentRequestEntity paymentRequest, context) async {
+    Map<String, dynamic> paymentRequestMap = paymentRequest.toJson();
+    final response =
+        await post(Endpoints.paymentRequest, paymentRequestMap, context);
+    return response;
+  }
+
   // Método para realizar una solicitud HTTP GET
   Future<dynamic> get(String endpoint) async {
     final response = await http.get(Uri.parse('${UrlApi.API}/$endpoint'));
@@ -98,7 +108,11 @@ class ApiService {
   // Método para realizar una solicitud HTTP POST
   static Future<dynamic> post(
       String endpoint, Map<String, dynamic> data, context) async {
-    String token = _boxLogin.get("status") != null ? _boxLogin.get("status") ? _boxLogin.get('Token') : '' : '';
+    String token = _boxLogin.get("status") != null
+        ? _boxLogin.get("status")
+            ? _boxLogin.get('token')
+            : ''
+        : '';
     final response = await http.post(
       Uri.parse('${UrlApi.API}/$endpoint'),
       headers: <String, String>{
