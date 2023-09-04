@@ -36,7 +36,14 @@ class NavDrawer extends StatelessWidget {
                 title: const Text('Link de pago'),
                 leading: const Icon(Icons.link),
                 onTap: () => {
-                  Navigator.of(context).pop(),
+                  if (navigatorKey.currentState!.canPop())
+                    {
+                      navigatorKey.currentState
+                          ?.pushReplacementNamed('/payment-link')
+                    }
+                  else
+                    {navigatorKey.currentState?.pushNamed('/payment-link')},
+                  Navigator.of(context).pop()
                 },
               ),
             ],

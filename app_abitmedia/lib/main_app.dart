@@ -1,4 +1,5 @@
-import 'package:app_abitmedia/pages/paymentRequest.dart';
+import 'package:app_abitmedia/pages/PaymentLink.dart';
+import 'package:app_abitmedia/pages/PaymentRequest.dart';
 import 'package:flutter/material.dart';
 
 import 'ui/login.dart';
@@ -16,6 +17,7 @@ class MainApp extends StatelessWidget {
       ),
       routes: {
         '/payment-request': (context) => const PaymentRequestWidget(),
+        '/payment-link': (context) => const PaymentLinkWidget(),
       },
       home: const Login(),
     );
