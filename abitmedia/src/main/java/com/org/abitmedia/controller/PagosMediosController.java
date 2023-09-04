@@ -6,10 +6,7 @@ import com.org.abitmedia.pagosmedios.payload.RequestData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,6 +31,18 @@ public class PagosMediosController {
             @Valid @RequestBody LinkData linkData
     ) {
         return pagosMedios.PaymentLink(linkData);
+    }
+
+    @GetMapping(value = "/payment-request")
+    @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
+    public ResponseEntity<?> GetPaymentRequest() {
+        return pagosMedios.ListPaymentRequest();
+    }
+
+    @GetMapping(value = "/payment-link")
+    @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
+    public ResponseEntity<?> GetPaymentLink() {
+        return pagosMedios.ListPaymentLinks();
     }
 
 }

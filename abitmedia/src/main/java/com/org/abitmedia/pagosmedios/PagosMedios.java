@@ -3,10 +3,7 @@ package com.org.abitmedia.pagosmedios;
 import com.org.abitmedia.pagosmedios.payload.LinkData;
 import com.org.abitmedia.pagosmedios.payload.RequestData;
 import org.json.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -63,6 +60,75 @@ public class PagosMedios {
             return ResponseEntity.badRequest().body(response);
         }
 
+    }
+
+    public ResponseEntity<?> ListPaymentRequest () {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+
+        RestTemplate restTemplate = getRestTemplate();
+        HttpEntity<LinkData> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(
+                    urlService + "payment-requests",     // URL del servicio
+                    HttpMethod.GET,           // Método HTTP
+                    entity,                   // Encabezados personalizados
+                    String.class              // Tipo de respuesta esperada
+            );
+
+            String responseBody = response.getBody();
+            return ResponseEntity.ok(responseBody);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> ListPaymentLink () {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+
+        RestTemplate restTemplate = getRestTemplate();
+        HttpEntity<LinkData> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(
+                    urlService + "payment-links",     // URL del servicio
+                    HttpMethod.GET,           // Método HTTP
+                    entity,                   // Encabezados personalizados
+                    String.class              // Tipo de respuesta esperada
+            );
+
+            String responseBody = response.getBody();
+            return ResponseEntity.ok(responseBody);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> ListPaymentLinks () {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+
+        RestTemplate restTemplate = getRestTemplate();
+
+        String response = "";
+        try {
+            response = restTemplate.getForObject(urlService + "payment-links", String .class);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response = e.getMessage();
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     public RestTemplate getRestTemplate () {
