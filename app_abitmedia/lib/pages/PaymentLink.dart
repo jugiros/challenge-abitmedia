@@ -35,7 +35,7 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
           child: Column(
             children: [
               Text(
-                "Genera un link de pago",
+                "Genera un enlace de pago",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 20),

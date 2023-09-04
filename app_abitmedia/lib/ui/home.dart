@@ -15,7 +15,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       drawer: NavDrawer(navigatorKey: _navigatorKey),
       appBar: AppBar(
-        title: const Text('Bienvenido'),
+        title: Text(_boxLogin.get('username') ?? ''),
         actions: <Widget>[
           IconButton(
             icon: const Icon(

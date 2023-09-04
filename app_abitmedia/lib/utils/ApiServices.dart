@@ -48,6 +48,7 @@ class ApiService {
       final jsonData = jsonDecode(bodyResponse);
       _boxLogin.put("token", jsonData["access_token"]);
       _boxLogin.put("status", true);
+      _boxLogin.put("username", loginData.emailController.text);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
