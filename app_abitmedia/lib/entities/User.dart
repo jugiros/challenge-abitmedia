@@ -2,7 +2,7 @@ class User {
   final String name;
   final String lastName;
   final String email;
-  final String password;
+  final String? password;
 
   User(this.name, this.lastName, this.email, this.password);
 
@@ -17,7 +17,7 @@ class User {
 
   factory User.fromJson(dynamic json) {
     return User(json['name'] as String, json['lastName'] as String,
-        json['email'] as String, json['password'] as String);
+        json['email'] as String, json['password'] != null ? json['password'] as String : '',);
   }
 
   @override

@@ -1,6 +1,10 @@
 import 'package:app_abitmedia/entities/User.dart';
+import 'package:app_abitmedia/ui/login.dart';
+import 'package:app_abitmedia/utils/ApiServices.dart';
+import 'package:app_abitmedia/utils/Endpoints.dart';
 import 'package:app_abitmedia/utils/InputDecorationUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:loading_btn/loading_btn.dart';
 
 class UserProfileMaintenance extends StatefulWidget {
@@ -17,6 +21,8 @@ class _UserProfileMaintenanceState extends State<UserProfileMaintenance> {
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  final Box _boxLogin = Hive.box("login");
+  User user = User('', '', '', '');
 
   @override
   void initState() {
@@ -25,6 +31,9 @@ class _UserProfileMaintenanceState extends State<UserProfileMaintenance> {
     _lastNameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+
+    // Carga los datos del usuario al inicializar el widget.
+    _loadUserData();
   }
 
   @override
@@ -34,6 +43,22 @@ class _UserProfileMaintenanceState extends State<UserProfileMaintenance> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final data = await ApiService.getUserData(Endpoints.updateUser, context);
+      setState(() {
+        user = User.fromJson(data);
+        // Establece los valores de los controladores con los datos del usuario.
+        _nameController.text = user.name;
+        _lastNameController.text = user.lastName;
+        _emailController.text = user.email;
+      });
+    } catch (error) {
+      // Manejar el error, mostrar un mensaje, etc.
+      print('Error: $error');
+    }
   }
 
   @override
@@ -116,7 +141,15 @@ class _UserProfileMaintenanceState extends State<UserProfileMaintenance> {
                         _passwordController.text,
                       );
                       stopLoading();
-                      Navigator.of(context).pop();
+                      _boxLogin.clear();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const Login();
+                          },
+                        ),
+                      );
                     }
                   }
                 }),

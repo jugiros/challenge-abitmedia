@@ -50,6 +50,7 @@ class ApiService {
       String bodyResponse = utf8.decode(response.bodyBytes);
       final jsonData = jsonDecode(bodyResponse);
       _boxLogin.put("token", jsonData["access_token"]);
+      _boxLogin.put("user_id", jsonData["user_id"]);
       _boxLogin.put("status", true);
       _boxLogin.put("username", loginData.emailController.text);
       Navigator.pushReplacement(
@@ -133,6 +134,27 @@ class ApiService {
         // Manejar el caso en que 'data' no sea una lista
         return [];
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(snackBarError);
+      return json.decode(response.body);
+    }
+  }
+
+  static Future<dynamic> getUserData(String endpoint, context) async {
+    String token = _boxLogin.get("status") != null
+        ? _boxLogin.get("status")
+        ? _boxLogin.get('token')
+        : ''
+        : '';
+    final response = await http
+        .get(Uri.parse('${UrlApi.API}/$endpoint/${_boxLogin.get('user_id')}'), headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token != '' ? 'Bearer $token' : ''
+    });
+    if (response.statusCode == 200) {
+      String bodyResponse = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(bodyResponse);
+      return jsonData;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(snackBarError);
       return json.decode(response.body);
