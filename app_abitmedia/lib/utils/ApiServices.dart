@@ -22,6 +22,12 @@ class ApiService {
     duration: Duration(seconds: 5),
   );
 
+  static const snackBarRegistrado = SnackBar(
+    content: Text('El correo electrónico ya se encuentra registrado.'),
+    backgroundColor: Colors.red,
+    duration: Duration(seconds: 5),
+  );
+
   static const snackBarSucces = SnackBar(
     content: Text('Proceso realizado correctamente.'),
     backgroundColor: Colors.green,
@@ -182,6 +188,9 @@ class ApiService {
       final jsonData = jsonDecode(bodyResponse);
       ScaffoldMessenger.of(context).showSnackBar(snackBarSucces);
       return jsonData;
+    } else if (response.statusCode == 400) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBarRegistrado);
+      return json.decode(response.body);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(snackBarError);
       return json.decode(response.body);
@@ -189,19 +198,32 @@ class ApiService {
   }
 
   // Método para realizar una solicitud HTTP PUT
-  Future<dynamic> put(String endpoint, Map<String, dynamic> data) async {
+  static Future<dynamic> putData(String endpoint, userPut, context) async {
+    String token = _boxLogin.get("status") != null
+        ? _boxLogin.get("status")
+        ? _boxLogin.get('token')
+        : ''
+        : '';
     final response = await http.put(
       Uri.parse('${UrlApi.API}/$endpoint'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': token != '' ? 'Bearer $token' : ''
       },
-      body: jsonEncode(data),
+      body: jsonEncode(userPut),
     );
 
     if (response.statusCode == 200) {
+      String bodyResponse = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(bodyResponse);
+      ScaffoldMessenger.of(context).showSnackBar(snackBarSucces);
+      return jsonData;
+    } else if (response.statusCode == 400) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBarRegistrado);
       return json.decode(response.body);
     } else {
-      throw Exception('Error en la solicitud PUT: ${response.reasonPhrase}');
+      ScaffoldMessenger.of(context).showSnackBar(snackBarError);
+      return json.decode(response.body);
     }
   }
 

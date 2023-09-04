@@ -1,4 +1,5 @@
 import 'package:app_abitmedia/entities/User.dart';
+import 'package:app_abitmedia/entities/UserPut.dart';
 import 'package:app_abitmedia/ui/login.dart';
 import 'package:app_abitmedia/utils/ApiServices.dart';
 import 'package:app_abitmedia/utils/Endpoints.dart';
@@ -8,7 +9,6 @@ import 'package:hive/hive.dart';
 import 'package:loading_btn/loading_btn.dart';
 
 class UserProfileMaintenance extends StatefulWidget {
-
   const UserProfileMaintenance({super.key});
 
   @override
@@ -47,7 +47,7 @@ class _UserProfileMaintenanceState extends State<UserProfileMaintenance> {
 
   Future<void> _loadUserData() async {
     try {
-      final data = await ApiService.getUserData(Endpoints.updateUser, context);
+      final data = await ApiService.getUserData(Endpoints.getUserData, context);
       setState(() {
         user = User.fromJson(data);
         // Establece los valores de los controladores con los datos del usuario.
@@ -126,20 +126,22 @@ class _UserProfileMaintenanceState extends State<UserProfileMaintenance> {
                   width: 40,
                   height: 40,
                   child: const CircularProgressIndicator(
-                    valueColor:
-                    AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 ),
                 onTap: ((startLoading, stopLoading, btnState) async {
                   if (btnState == ButtonState.idle) {
                     if (_formKey.currentState?.validate() ?? false) {
                       startLoading();
-                      final updatedUser = User(
+                      final updatedUser = UserPut(
+                        _boxLogin.get('user_id'),
                         _nameController.text,
                         _lastNameController.text,
                         _emailController.text,
                         _passwordController.text,
                       );
+                      await ApiService.putData(
+                          Endpoints.updateUser, updatedUser, context);
                       stopLoading();
                       _boxLogin.clear();
                       Navigator.push(
