@@ -103,20 +103,39 @@ class ApiService {
   static Future<dynamic> paymentLink(
       PaymentLinkEntity paymentLink, context) async {
     Map<String, dynamic> paymentLinkMap = paymentLink.toJson();
-    final response =
-    await post(Endpoints.paymentLink, paymentLinkMap, context);
+    final response = await post(Endpoints.paymentLink, paymentLinkMap, context);
     String info = response['data']['url'];
     ServiceInfoModal.show(context, info);
     return response;
   }
 
   // Método para realizar una solicitud HTTP GET
-  Future<dynamic> get(String endpoint) async {
-    final response = await http.get(Uri.parse('${UrlApi.API}/$endpoint'));
+  static Future<dynamic> getList(String endpoint, context) async {
+    String token = _boxLogin.get("status") != null
+        ? _boxLogin.get("status")
+            ? _boxLogin.get('token')
+            : ''
+        : '';
+    final response = await http
+        .get(Uri.parse('${UrlApi.API}/$endpoint'), headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token != '' ? 'Bearer $token' : ''
+    });
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      String bodyResponse = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(bodyResponse);
+      if (jsonData['data'] is List) {
+        List<dynamic> data = jsonData['data'];
+        List<Map<String, dynamic>> typedData = data.cast<Map<String, dynamic>>();
+        ScaffoldMessenger.of(context).showSnackBar(snackBarSucces);
+        return typedData;
+      } else {
+        // Manejar el caso en que 'data' no sea una lista
+        return [];
+      }
     } else {
-      throw Exception('Error en la solicitud GET: ${response.reasonPhrase}');
+      ScaffoldMessenger.of(context).showSnackBar(snackBarError);
+      return json.decode(response.body);
     }
   }
 
@@ -129,14 +148,12 @@ class ApiService {
             : ''
         : '';
     String bodySend = jsonEncode(data);
-    final response = await http.post(
-      Uri.parse('${UrlApi.API}/$endpoint'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': token != '' ? 'Bearer $token' : ''
-      },
-      body: bodySend
-    );
+    final response = await http.post(Uri.parse('${UrlApi.API}/$endpoint'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token != '' ? 'Bearer $token' : ''
+        },
+        body: bodySend);
 
     if (response.statusCode == 200) {
       String bodyResponse = utf8.decode(response.bodyBytes);

@@ -46,6 +46,34 @@ class NavDrawer extends StatelessWidget {
                   Navigator.of(context).pop()
                 },
               ),
+              ListTile(
+                title: const Text('Lista de solicitudes de pago'),
+                leading: const Icon(Icons.list),
+                onTap: () => {
+                  if (navigatorKey.currentState!.canPop())
+                    {
+                      navigatorKey.currentState
+                          ?.pushReplacementNamed('/payment-request-list')
+                    }
+                  else
+                    {navigatorKey.currentState?.pushNamed('/payment-request-list')},
+                  Navigator.of(context).pop()
+                },
+              ),
+              ListTile(
+                title: const Text('Lista de enlaces de pago'),
+                leading: const Icon(Icons.list_alt),
+                onTap: () => {
+                  if (navigatorKey.currentState!.canPop())
+                    {
+                      navigatorKey.currentState
+                          ?.pushReplacementNamed('/payment-link-list')
+                    }
+                  else
+                    {navigatorKey.currentState?.pushNamed('/payment-link-list')},
+                  Navigator.of(context).pop()
+                },
+              ),
             ],
           ),
         ),

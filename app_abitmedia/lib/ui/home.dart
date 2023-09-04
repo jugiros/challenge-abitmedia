@@ -1,5 +1,7 @@
 import 'package:app_abitmedia/pages/PaymentLink.dart';
+import 'package:app_abitmedia/pages/PaymentLinkList.dart';
 import 'package:app_abitmedia/pages/PaymentRequest.dart';
+import 'package:app_abitmedia/pages/PaymentRequestList.dart';
 import 'package:app_abitmedia/ui/login.dart';
 import 'package:app_abitmedia/widgets/NavDrawer.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +50,14 @@ class MyHomePage extends StatelessWidget {
           if (settings.name == '/payment-link') {
             return MaterialPageRoute(
                 builder: (context) => const PaymentLinkWidget());
+          }
+          if (settings.name == '/payment-request-list') {
+            return MaterialPageRoute(
+                builder: (context) => const PaymentRequestList());
+          }
+          if (settings.name == '/payment-link-list') {
+            return MaterialPageRoute(
+                builder: (context) => const PaymentLinkList());
           }
           // Agrega más rutas según sea necesario
           return MaterialPageRoute(
