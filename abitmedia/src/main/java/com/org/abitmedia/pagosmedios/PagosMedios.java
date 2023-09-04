@@ -16,7 +16,7 @@ public class PagosMedios {
     private String urlService = "https://api.abitmedia.cloud/pagomedios/v2/";
     private String token = "3wv1x3b0eyc5zj8vxnqaiqaeiutgi7pphk4p0nbtrekg-gcpdrzsnlxihqhxgb7vszqlo";
 
-    public ResponseEntity<?> PaymentRequest (RequestData requestData) {
+    public ResponseEntity<?> PaymentRequest(RequestData requestData) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
@@ -29,7 +29,7 @@ public class PagosMedios {
 
         String response = "";
         try {
-            response = restTemplate.postForObject(urlService + "payment-requests", request, String .class);
+            response = restTemplate.postForObject(urlService + "payment-requests", request, String.class);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PagosMedios {
 
     }
 
-    public ResponseEntity<?> PaymentLink (LinkData linkData) {
+    public ResponseEntity<?> PaymentLink(LinkData linkData) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
@@ -52,7 +52,7 @@ public class PagosMedios {
 
         String response = "";
         try {
-            response = restTemplate.postForObject(urlService + "payment-links", request, String .class);
+            response = restTemplate.postForObject(urlService + "payment-links", request, String.class);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class PagosMedios {
 
     }
 
-    public ResponseEntity<?> ListPaymentRequest () {
+    public ResponseEntity<?> ListPaymentRequest() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
@@ -73,8 +73,7 @@ public class PagosMedios {
 
         ResponseEntity<String> response = null;
         try {
-            response = restTemplate.exchange(
-                    urlService + "payment-requests",     // URL del servicio
+            response = restTemplate.exchange(urlService + "payment-requests?integration=true",     // URL del servicio
                     HttpMethod.GET,           // Método HTTP
                     entity,                   // Encabezados personalizados
                     String.class              // Tipo de respuesta esperada
@@ -87,7 +86,7 @@ public class PagosMedios {
         }
     }
 
-    public ResponseEntity<?> ListPaymentLink () {
+    public ResponseEntity<?> ListPaymentLink() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
@@ -98,8 +97,7 @@ public class PagosMedios {
 
         ResponseEntity<String> response = null;
         try {
-            response = restTemplate.exchange(
-                    urlService + "payment-links",     // URL del servicio
+            response = restTemplate.exchange(urlService + "payment-links?integration=true",     // URL del servicio
                     HttpMethod.GET,           // Método HTTP
                     entity,                   // Encabezados personalizados
                     String.class              // Tipo de respuesta esperada
@@ -112,26 +110,7 @@ public class PagosMedios {
         }
     }
 
-    public ResponseEntity<?> ListPaymentLinks () {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-
-        RestTemplate restTemplate = getRestTemplate();
-
-        String response = "";
-        try {
-            response = restTemplate.getForObject(urlService + "payment-links", String .class);
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response = e.getMessage();
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    public RestTemplate getRestTemplate () {
+    public RestTemplate getRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setSupportedMediaTypes(Arrays.asList(MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON));

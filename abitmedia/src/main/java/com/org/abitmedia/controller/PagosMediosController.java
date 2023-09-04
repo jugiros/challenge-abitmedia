@@ -19,17 +19,13 @@ public class PagosMediosController {
 
     @PostMapping(value = "/payment-request")
     @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
-    public ResponseEntity<?> PaymentRequest(
-            @Valid @RequestBody RequestData requestData
-    ) {
+    public ResponseEntity<?> PaymentRequest(@Valid @RequestBody RequestData requestData) {
         return pagosMedios.PaymentRequest(requestData);
     }
 
     @PostMapping(value = "/payment-link")
     @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
-    public ResponseEntity<?> PaymentLink(
-            @Valid @RequestBody LinkData linkData
-    ) {
+    public ResponseEntity<?> PaymentLink(@Valid @RequestBody LinkData linkData) {
         return pagosMedios.PaymentLink(linkData);
     }
 
@@ -42,7 +38,7 @@ public class PagosMediosController {
     @GetMapping(value = "/payment-link")
     @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
     public ResponseEntity<?> GetPaymentLink() {
-        return pagosMedios.ListPaymentLinks();
+        return pagosMedios.ListPaymentLink();
     }
 
 }
