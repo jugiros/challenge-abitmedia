@@ -1,6 +1,7 @@
 import 'package:app_abitmedia/models/LoginData.dart';
 import 'package:app_abitmedia/ui/home.dart';
 import 'package:app_abitmedia/utils/ApiServices.dart';
+import 'package:app_abitmedia/utils/InputDecorationUtils.dart';
 import 'package:hive/hive.dart';
 import 'package:loading_btn/loading_btn.dart';
 import 'package:flutter/material.dart';
@@ -49,18 +50,7 @@ class _LoginState extends State<Login> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  labelText: "Usuario",
-                  suffixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                decoration: InputDecorationUtils.buildInputDecoration('Usuario', Icons.person_outline),
                 onEditingComplete: () => loginData.passwordFocusNode,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
@@ -90,10 +80,12 @@ class _LoginState extends State<Login> {
                           ? const Icon(Icons.visibility_outlined)
                           : const Icon(Icons.visibility_off_outlined)),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(color: Colors.grey),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(color: Colors.grey),
                   ),
                 ),
                 validator: (String? value) {

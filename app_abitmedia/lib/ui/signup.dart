@@ -1,6 +1,7 @@
 import 'package:app_abitmedia/entities/User.dart';
 import 'package:app_abitmedia/models/RegisterData.dart';
 import 'package:app_abitmedia/utils/ApiServices.dart';
+import 'package:app_abitmedia/utils/InputDecorationUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_btn/loading_btn.dart';
 
@@ -38,18 +39,7 @@ class _SignupState extends State<Signup> {
                 controller: registerData.controllerName,
                 keyboardType: TextInputType.name,
                 style: const TextStyle(fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  labelText: "Nombres",
-                  suffixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                decoration: InputDecorationUtils.buildInputDecoration('Nombres', Icons.person_outline),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa tus dos nombres.";
@@ -65,18 +55,7 @@ class _SignupState extends State<Signup> {
                 controller: registerData.controllerSurename,
                 keyboardType: TextInputType.name,
                 style: const TextStyle(fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  labelText: "Apellidos",
-                  suffixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                decoration: InputDecorationUtils.buildInputDecoration('Apellidos', Icons.person_outline),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa tus dos apellidos.";
@@ -93,18 +72,7 @@ class _SignupState extends State<Signup> {
                 focusNode: registerData.focusNodeEmail,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  labelText: "Correo electrónico",
-                  suffixIcon: const Icon(Icons.email_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                decoration: InputDecorationUtils.buildInputDecoration('Correo electrónico', Icons.email_outlined),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa tu correo electrónico.";
@@ -137,10 +105,12 @@ class _SignupState extends State<Signup> {
                           ? const Icon(Icons.visibility_outlined)
                           : const Icon(Icons.visibility_off_outlined)),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(color: Colors.grey),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(color: Colors.grey),
                   ),
                 ),
                 validator: (String? value) {
@@ -175,10 +145,10 @@ class _SignupState extends State<Signup> {
                           ? const Icon(Icons.visibility_outlined)
                           : const Icon(Icons.visibility_off_outlined)),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 validator: (String? value) {
