@@ -1,5 +1,6 @@
 package com.org.abitmedia.pagosmedios;
 
+import com.org.abitmedia.pagosmedios.payload.LinkData;
 import com.org.abitmedia.pagosmedios.payload.RequestData;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -20,7 +21,6 @@ public class PagosMedios {
 
     public ResponseEntity<?> PaymentRequest (RequestData requestData) {
 
-        String URL_PAGOSMEDIOS_SERVICE = urlService + "payment-requests";
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
@@ -32,13 +32,35 @@ public class PagosMedios {
 
         String response = "";
         try {
-            response = restTemplate.postForObject(URL_PAGOSMEDIOS_SERVICE, request, String .class);
-            JSONObject jsonObj = new JSONObject(response);
+            response = restTemplate.postForObject(urlService + "payment-requests", request, String .class);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response = e.getMessage();
+            return ResponseEntity.badRequest().body(response);
+        }
+
+    }
+
+    public ResponseEntity<?> PaymentLink (LinkData linkData) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        headers.add(HttpHeaders.ACCEPT, MediaType.ALL_VALUE);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+
+        RestTemplate restTemplate = getRestTemplate();
+
+        HttpEntity<LinkData> request = new HttpEntity<>(linkData, headers);
+
+        String response = "";
+        try {
+            response = restTemplate.postForObject(urlService + "payment-links", request, String .class);
+
             return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response = e.getMessage();
+            return ResponseEntity.badRequest().body(response);
         }
 
     }

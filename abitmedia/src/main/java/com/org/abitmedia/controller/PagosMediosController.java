@@ -1,6 +1,7 @@
 package com.org.abitmedia.controller;
 
 import com.org.abitmedia.pagosmedios.PagosMedios;
+import com.org.abitmedia.pagosmedios.payload.LinkData;
 import com.org.abitmedia.pagosmedios.payload.RequestData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,14 @@ public class PagosMediosController {
             @Valid @RequestBody RequestData requestData
     ) {
         return pagosMedios.PaymentRequest(requestData);
+    }
+
+    @PostMapping(value = "/payment-link")
+    @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
+    public ResponseEntity<?> PaymentLink(
+            @Valid @RequestBody LinkData linkData
+    ) {
+        return pagosMedios.PaymentLink(linkData);
     }
 
 }

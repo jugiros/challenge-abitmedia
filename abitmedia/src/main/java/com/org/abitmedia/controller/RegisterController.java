@@ -26,7 +26,9 @@ public class RegisterController {
     public ResponseEntity<?> CreateUser(
             @Valid @RequestBody User user
     ) {
-        System.out.println(user);
+        Boolean valid = userRepository.existsByEmail(user.getEmail());
+        if (valid)
+            return ResponseEntity.badRequest().body(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.ok(userRepository.save(user));
     }

@@ -4,23 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Getter
 @Setter
-public class RequestData {
+public class LinkData {
 
     private boolean integration;
-    private Third third;
     private Integer generate_invoice;
     private String description;
     private BigDecimal amount;
     private BigDecimal amount_with_tax;
     private BigDecimal amount_without_tax;
     private BigDecimal tax_value;
-    private String notify_url;
-    private String custom_value;
-    private Integer has_cash;
-    private Integer has_cards;
 
 }
