@@ -1,4 +1,4 @@
-class PaymentLink {
+class PaymentLinkEntity {
   final bool integration;
   final int generateInvoice;
   final String description;
@@ -8,7 +8,7 @@ class PaymentLink {
   final num taxValue;
   final List<String> settings;
 
-  PaymentLink(
+  PaymentLinkEntity(
       this.integration,
       this.generateInvoice,
       this.description,
@@ -18,8 +18,8 @@ class PaymentLink {
       this.taxValue,
       this.settings);
 
-  factory PaymentLink.fromJson(dynamic json) {
-    return PaymentLink(
+  factory PaymentLinkEntity.fromJson(dynamic json) {
+    return PaymentLinkEntity(
         json['integration'] as bool,
         json['generate_invoice'] as int,
         json['description'] as String,

@@ -34,7 +34,7 @@ class Third {
   }
 }
 
-class PaymentRequest {
+class PaymentRequestEntity {
   final bool integration;
   final Third third;
   final int generateInvoice;
@@ -43,13 +43,12 @@ class PaymentRequest {
   final num amountWithTax;
   final num amountWithoutTax;
   final num taxValue;
-  final List<String> settings;
-  final String notifyUrl;
-  final String customValue;
+  final String? notifyUrl;
+  final String? customValue;
   final int hasCash;
   final int hasCards;
 
-  PaymentRequest(
+  PaymentRequestEntity(
       this.integration,
       this.third,
       this.generateInvoice,
@@ -58,14 +57,13 @@ class PaymentRequest {
       this.amountWithTax,
       this.amountWithoutTax,
       this.taxValue,
-      this.settings,
       this.notifyUrl,
       this.customValue,
       this.hasCash,
       this.hasCards);
 
-  factory PaymentRequest.fromJson(dynamic json) {
-    return PaymentRequest(
+  factory PaymentRequestEntity.fromJson(dynamic json) {
+    return PaymentRequestEntity(
         json['integration'] as bool,
         json['third'] as Third,
         json['generate_invoice'] as int,
@@ -74,7 +72,6 @@ class PaymentRequest {
         json['amount_with_tax'] as num,
         json['amount_without_tax'] as num,
         json['tax_value'] as num,
-        json['settings'],
         json['notify_url'] as String,
         json['custom_value'] as String,
         json['has_cash'] as int,
@@ -91,7 +88,6 @@ class PaymentRequest {
       'amount_with_tax': amountWithTax,
       'amount_without_tax': amountWithoutTax,
       'tax_value': taxValue,
-      'settings': settings,
       'notify_url': notifyUrl,
       'custom_value': customValue,
       'has_cash': hasCash,
