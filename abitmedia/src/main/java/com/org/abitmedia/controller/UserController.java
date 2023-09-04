@@ -5,12 +5,10 @@ import com.org.abitmedia.pagosmedios.payload.RequestData;
 import com.org.abitmedia.pagosmedios.payload.UserData;
 import com.org.abitmedia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,7 +21,7 @@ public class UserController {
 
     @PutMapping(value = "/update-user")
     @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
-    public ResponseEntity<?> PaymentRequest(@Valid @RequestBody UserData userData) {
+    public ResponseEntity<?> UpdateUser(@Valid @RequestBody UserData userData) {
         User user = userRepository.findUserById(userData.getUser_id());
         if (user != null) {
             user.setName(userData.getName());
@@ -37,5 +35,11 @@ public class UserController {
         return ResponseEntity.ok(userData);
     }
 
+    @GetMapping(value = "/get-user/{id}")
+    @PreAuthorize("hasAnyAuthority('STANDAR_USER')")
+    public ResponseEntity<?> GetUser(@PathVariable Long id) {
+        User user = userRepository.findUserById(id);
+        return ResponseEntity.ok(user);
+    }
 
 }
