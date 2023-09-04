@@ -6,7 +6,6 @@ class PaymentLinkEntity {
   final num amountWithTax;
   final num amountWithoutTax;
   final num taxValue;
-  final List<String> settings;
 
   PaymentLinkEntity(
       this.integration,
@@ -15,8 +14,7 @@ class PaymentLinkEntity {
       this.amount,
       this.amountWithTax,
       this.amountWithoutTax,
-      this.taxValue,
-      this.settings);
+      this.taxValue);
 
   factory PaymentLinkEntity.fromJson(dynamic json) {
     return PaymentLinkEntity(
@@ -26,8 +24,7 @@ class PaymentLinkEntity {
         json['amount'] as num,
         json['amount_with_tax'] as num,
         json['amount_without_tax'] as num,
-        json['tax_value'] as num,
-        json['settings']);
+        json['tax_value'] as num);
   }
 
   Map<String, dynamic> toJson() {
@@ -38,8 +35,7 @@ class PaymentLinkEntity {
       'amount': amount,
       'amount_with_tax': amountWithTax,
       'amount_without_tax': amountWithoutTax,
-      'tax_value': taxValue,
-      'settings': settings
+      'tax_value': taxValue
     };
   }
 }

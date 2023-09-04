@@ -1,4 +1,6 @@
+import 'package:app_abitmedia/entities/PaymentLinkEntity.dart';
 import 'package:app_abitmedia/models/PaymentLinkData.dart';
+import 'package:app_abitmedia/utils/ApiServices.dart';
 import 'package:app_abitmedia/utils/InputDecorationUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,10 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
     // Aquí puedes construir tu interfaz de usuario utilizando los controladores de texto
     // Ejemplo:
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .primaryContainer,
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -36,7 +41,10 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
             children: [
               Text(
                 "Genera un enlace de pago",
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleLarge,
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -45,7 +53,8 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Cantidad', Icons.money),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Cantidad', Icons.money),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa el teléfono celular.";
@@ -65,7 +74,8 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: InputDecorationUtils.buildInputDecoration('Descripción', Icons.text_fields),
+                decoration: InputDecorationUtils.buildInputDecoration(
+                    'Descripción', Icons.text_fields),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Ingresa la descripción.";
@@ -78,7 +88,10 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
                 children: [
                   LoadingBtn(
                     height: 50,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     borderRadius: 10,
                     loader: Container(
                       padding: const EdgeInsets.all(10.0),
@@ -93,7 +106,21 @@ class _PaymentLinkWidgetState extends State<PaymentLinkWidget> {
                       if (btnState == ButtonState.idle) {
                         if (_formKey.currentState?.validate() ?? false) {
                           startLoading();
-                          // await ApiService.login(loginData, context);
+                          double amountWithTax = double.parse(
+                              paymentData.amountController.text) / 2;
+                          double taxValue = (double.parse(
+                              paymentData.amountController.text) / 2) * 0.12;
+                          PaymentLinkEntity paymentLinkEntity = PaymentLinkEntity
+                            (
+                              true,
+                              0,
+                              paymentData.descriptionController.text,
+                              (amountWithTax * 2) + taxValue,
+                              amountWithTax,
+                              amountWithTax,
+                              taxValue);
+                          await ApiService.paymentLink(paymentLinkEntity,
+                              context);
                           _formKey.currentState?.reset();
                           stopLoading();
                         }

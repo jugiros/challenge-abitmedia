@@ -272,7 +272,7 @@ class _PaymentRequestWidgetState extends State<PaymentRequestWidget> {
                           double taxValue = (double.parse(
                               paymentData.amountController.text) / 2) * 0.12;
                           PaymentRequestEntity paymentReques = PaymentRequestEntity(
-                              false,
+                              true,
                               third,
                               0,
                               paymentData.descriptionController.text,

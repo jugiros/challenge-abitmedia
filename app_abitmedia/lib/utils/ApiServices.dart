@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:app_abitmedia/entities/PaymentLinkEntity.dart';
 import 'package:app_abitmedia/entities/PaymentRequestEntity.dart';
 import 'package:app_abitmedia/entities/User.dart';
 import 'package:app_abitmedia/models/LoginData.dart';
 import 'package:app_abitmedia/ui/home.dart';
 import 'package:app_abitmedia/ui/login.dart';
 import 'package:app_abitmedia/utils/Endpoints.dart';
+import 'package:app_abitmedia/utils/ServiceInfoModal.dart';
 import 'package:app_abitmedia/utils/jwtCredentials.dart';
 import 'package:app_abitmedia/utils/urlApi.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +94,19 @@ class ApiService {
     Map<String, dynamic> paymentRequestMap = paymentRequest.toJson();
     final response =
         await post(Endpoints.paymentRequest, paymentRequestMap, context);
+    String info = response['data']['url'];
+    ServiceInfoModal.show(context, info);
+    return response;
+  }
+
+  //Método para generar una solicitud de pago
+  static Future<dynamic> paymentLink(
+      PaymentLinkEntity paymentLink, context) async {
+    Map<String, dynamic> paymentLinkMap = paymentLink.toJson();
+    final response =
+    await post(Endpoints.paymentLink, paymentLinkMap, context);
+    String info = response['data']['url'];
+    ServiceInfoModal.show(context, info);
     return response;
   }
 
@@ -113,13 +128,14 @@ class ApiService {
             ? _boxLogin.get('token')
             : ''
         : '';
+    String bodySend = jsonEncode(data);
     final response = await http.post(
       Uri.parse('${UrlApi.API}/$endpoint'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': token != '' ? 'Bearer $token' : ''
       },
-      body: jsonEncode(data),
+      body: bodySend
     );
 
     if (response.statusCode == 200) {
