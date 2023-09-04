@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NavDrawer extends StatelessWidget {
-  NavDrawer({super.key});
+  final GlobalKey<NavigatorState> navigatorKey; // Declara navigatorKey
+  NavDrawer({required this.navigatorKey}); // Elimina const del constructor
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,14 @@ class NavDrawer extends StatelessWidget {
                 title: const Text('Solicitud de pago'),
                 leading: const Icon(Icons.monetization_on),
                 onTap: () => {
-                  Navigator.of(context).pop(),
+                  if (navigatorKey.currentState!.canPop())
+                    {
+                      navigatorKey.currentState
+                          ?.pushReplacementNamed('/payment-request')
+                    }
+                  else
+                    {navigatorKey.currentState?.pushNamed('/payment-request')},
+                  Navigator.of(context).pop()
                 },
               ),
               ListTile(

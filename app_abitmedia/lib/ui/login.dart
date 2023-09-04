@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     if (_boxLogin.get("status") ?? false) {
-      return const MyHomePage();
+      return MyHomePage();
     }
 
     return Scaffold(

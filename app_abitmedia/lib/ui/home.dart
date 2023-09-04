@@ -1,18 +1,18 @@
+import 'package:app_abitmedia/pages/paymentRequest.dart';
 import 'package:app_abitmedia/ui/login.dart';
 import 'package:app_abitmedia/widgets/NavDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class MyHomePage extends StatelessWidget {
-
-  const MyHomePage({super.key});
-  static Box _boxLogin = Hive.box("login");
+  MyHomePage({Key? key}) : super(key: key);
+  static final Box _boxLogin = Hive.box("login");
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(navigatorKey: _navigatorKey),
       appBar: AppBar(
         title: const Text('Bienvenido'),
         actions: <Widget>[
@@ -34,6 +34,21 @@ class MyHomePage extends StatelessWidget {
             },
           ),
         ],
+      ),
+      // Utiliza un Navigator dentro del body
+      body: Navigator(
+        key: _navigatorKey,
+        onGenerateRoute: (settings) {
+          // Define las rutas y cómo se deben construir las vistas aquí
+          if (settings.name == '/payment-request') {
+            return MaterialPageRoute(
+                builder: (context) => const PaymentRequestWidget());
+          }
+          // Agrega más rutas según sea necesario
+          return MaterialPageRoute(
+              builder: (context) =>
+                  const PaymentRequestWidget()); // Cambia Placeholder() por tu vista predeterminada
+        },
       ),
     );
   }
