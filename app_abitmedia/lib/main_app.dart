@@ -2,6 +2,7 @@ import 'package:app_abitmedia/pages/PaymentLink.dart';
 import 'package:app_abitmedia/pages/PaymentLinkList.dart';
 import 'package:app_abitmedia/pages/PaymentRequest.dart';
 import 'package:app_abitmedia/pages/PaymentRequestList.dart';
+import 'package:app_abitmedia/pages/UserProfileMaintenance.dart';
 import 'package:flutter/material.dart';
 
 import 'ui/login.dart';
@@ -18,6 +19,7 @@ class MainApp extends StatelessWidget {
         ),
       ),
       routes: {
+        '/profile': (context) => const UserProfileMaintenance(),
         '/payment-request': (context) => const PaymentRequestWidget(),
         '/payment-link': (context) => const PaymentLinkWidget(),
         '/payment-request-list': (context) => const PaymentRequestList(),

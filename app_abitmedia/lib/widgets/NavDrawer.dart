@@ -19,6 +19,20 @@ class NavDrawer extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               ListTile(
+                title: const Text('Perfil de usuario'),
+                leading: const Icon(Icons.person),
+                onTap: () => {
+                  if (navigatorKey.currentState!.canPop())
+                    {
+                      navigatorKey.currentState
+                          ?.pushReplacementNamed('/profile')
+                    }
+                  else
+                    {navigatorKey.currentState?.pushNamed('/profile')},
+                  Navigator.of(context).pop()
+                },
+              ),
+              ListTile(
                 title: const Text('Solicitud de pago'),
                 leading: const Icon(Icons.monetization_on),
                 onTap: () => {
